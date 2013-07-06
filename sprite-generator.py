@@ -159,9 +159,9 @@ def new_icon(filename, white=False):
                 if len(pixel_data[x, y]) == 4:
                     if pixel_data[x, y][3] > 0:
                         alpha = float(float(pixel_data[x, y][3]) / 255)
-                        if pixel_data[x, y][0] < WHITE[0]:
-                            pixel_data[x, y] = (WHITE[0], WHITE[1], WHITE[2],
-                                                pixel_data[x, y][3])
+                        #if pixel_data[x, y][0] < WHITE[0]:
+                        pixel_data[x, y] = (WHITE[0], WHITE[1], WHITE[2],
+                                            pixel_data[x, y][3])
                 else:
                     pixel_data[x, y] = WHITE
 
