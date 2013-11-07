@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 """
-GLYPHICONS Sprite Generator for Bootstrap
+GLYPHICONS Sprite Generator
+
+
+This was originally developed for Bootstrap, but I don't like Bootstrap's naming conventions.
+So, I used saner css class names which resulted in a smaller, simpler stylesheet, which will
+result in smaller, simpler HTML.
+
 
 The GLYPHICONS Sprite Generator allows you to change the size and colors of the
 Bootstap icons using the Free or Pro versions of GLYPHICONS. When using the Pro
 files, all the extra icons will be available to your Bootstrap project.
-
-New CSS and PNG sprites are generated that can override Bootstrap's
-default icon before or mixed into a Bootstrap LESS project.
 
 Dependencies
 ------------
@@ -28,16 +31,9 @@ How to use sprite-generator.py
     - glyphicons.css         CSS Overrides
     - glyphicons.html        Preview HTML
     - glyphicons.png         Black Icons
-    - glyphicons-white.png   White (or colorized) icons
+    - glyphicons-alt.png     White (or colorized) icons
 
  5. Open sprites/glyphicons.html in your browser (if you're on a Mac, it will try and do so itself)
-
-How to use in your Bootstrap project
-------------------------------------
-1. Copy the glyphicons.png and glyphicons-white.png to the project img directory.
-2. Include the glyphicons.css file *after* the bootstrap CSS files or include in
-   your bootstrap.less files after the sprites.less entry.
-3. Edit glyphicons.css, fixing the paths to the image files in the background-image directives.
 
 """
 # If you want to change the color of the icon-white sprite, change this (R,G,B) value
@@ -75,11 +71,10 @@ ICON_NAME = re.compile(r'glyphicons/png/glyphicons_\d{3}_([\w_@\+\-]+)\.png')
 
 SPRITE_CSS = 'sprites/glyphicons.css'
 SPRITE_FILE = 'sprites/glyphicons.png'
-SPRITE_WHITE_FILE = 'sprites/glyphicons-white.png'
+SPRITE_WHITE_FILE = 'sprites/glyphicons-alt.png'
 SPRITE_HTML = 'sprites/glyphicons.html'
 
-CSS_TEMPLATE = """[class^="icon-"],
-[class*=" icon-"] {
+CSS_TEMPLATE = """.icon {
   display: inline-block;
   width: %spx;
   height: %spx;
@@ -87,27 +82,16 @@ CSS_TEMPLATE = """[class^="icon-"],
   *margin-right: .3em;
   line-height: %spx;
   vertical-align: text-top;
-  background-image: url("glyphicons.png");
   background-position: %spx %spx;
   background-repeat: no-repeat;
 }
 
-/* White icons with optional class, or on hover/active states of certain elements */
+.icon, .hinvert:hover .icon.alt, .icon.alt.hinvert:hover {
+  background-image: url("glyphicons.png");
+}
 
-.icon-white,
-.nav-pills > .active > a > [class^="icon-"],
-.nav-pills > .active > a > [class*=" icon-"],
-.nav-list > .active > a > [class^="icon-"],
-.nav-list > .active > a > [class*=" icon-"],
-.navbar-inverse .nav > .active > a > [class^="icon-"],
-.navbar-inverse .nav > .active > a > [class*=" icon-"],
-.dropdown-menu > li > a:hover > [class^="icon-"],
-.dropdown-menu > li > a:hover > [class*=" icon-"],
-.dropdown-menu > .active > a > [class^="icon-"],
-.dropdown-menu > .active > a > [class*=" icon-"],
-.dropdown-submenu:hover > a > [class^="icon-"],
-.dropdown-submenu:hover > a > [class*=" icon-"] {
-  background-image: url("glyphicons-white.png");
+.icon.alt, .hinvert:hover .icon, .icon.hinvert:hover {
+  background-image: url("glyphicons-alt.png");
 }
 
 """ % (ICON_SIZE[0], ICON_SIZE[1], ICON_SIZE[1], ICON_SIZE[0], ICON_SIZE[1])
@@ -130,8 +114,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <table class="table" style="width: 350px; margin-left: 25px;">
         <thead>
           <th style="width: 200px;">Class</th>
-          <th style="text-align: center; width: 75px;">Preview</th>
-          <th style="text-align: center; width: 75px;">White Preview</th>
+          <th class="colhead">Preview</th>
+          <th class="colhead">White Preview</th>
+          <th class="colhead">Hinvert Preview</th>
+          <th class="colhead">White Hinvert Preview</th>
         </thead>
         <tbody>
           %s
@@ -143,10 +129,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       </p>
       <footer><p>Sprite Generator created by <a href="https://github.com/gmr">Gavin M. Roy</a> (<a href="https://twitter.com/crad">@Crad</a>)</p></footer>
     </div>
+    <style>
+      .center, colhead {
+        text-align: center;
+      }
+      .bg-gray {
+        background-color: #%s;
+      }
+      .colhead {
+        width: 75px;
+      }
+    </style>
   </body>
 </html>"""
 
-TR_TEMPLATE = '        <tr><td>%s</td><td style="text-align: center;"><i class="%s"></i></td><td style="background-color: #%s; text-align: center;"><i class="%s icon-white"></i></td></tr>'
+TR_TEMPLATE = '        <tr><td>%s</td><td class="center"><i class="icon %s"></i></td><td class="center bg-gray"><i class="icon alt %s"></i></td><td class="hinvert center"><i class="icon %s"></i></td><td class="hinvert center bg-gray"><i class="icon alt %s"></i></td></tr>'
 
 
 def new_icon(filename, white=False):
@@ -221,7 +218,7 @@ def main():
         match = ICON_NAME.findall(filename)
 
         # Create the class name
-        name = 'icon-%s' % match[0].replace('_', '-').replace('@2x', '')
+        name = match[0].replace('_', '-').replace('@2x', '')
 
         # Position in the sprite
         x = (column * CELL_SIZE[0]) + 5
@@ -232,7 +229,7 @@ def main():
         sprite_white.paste(new_icon(filename, True), (x, y))
 
         # Create the CSS line
-        icons[name] = ".%s { background-position: -%ipx -%ipx; }" % (name, (column * CELL_SIZE[0]) + 5, (row * CELL_SIZE[1]) + 5)
+        icons[name] = ".icon.%s { background-position: -%ipx -%ipx; }" % (name, (column * CELL_SIZE[0]) + 5, (row * CELL_SIZE[1]) + 5)
 
         # Keep track of where we are in the sprite
         column += 1
@@ -254,12 +251,12 @@ def main():
         handle.write(CSS_TEMPLATE)
         for key in sorted(icons.keys()):
             handle.write('%s\n' % icons[key])
-            glyphicons.append(TR_TEMPLATE % (key, key, PREVIEW_BACKGROUND, key))
+            glyphicons.append(TR_TEMPLATE % (key, key, key, key, key))
 
     # Write out the HTML file
     with open(SPRITE_HTML, "w") as handle:
         tr = '\n'.join(glyphicons)
-        handle.write(HTML_TEMPLATE % (tr))
+        handle.write(HTML_TEMPLATE % (tr, PREVIEW_BACKGROUND))
 
     print 'Generation complete, files are in the sprites directory'
 

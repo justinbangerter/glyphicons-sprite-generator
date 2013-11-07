@@ -1,11 +1,16 @@
-GLYPHICONS Sprite Generator for Bootstrap
+GLYPHICONS Sprite Generator (NOT for Bootstrap!!!)
 =========================================
 The GLYPHICONS Sprite Generator allows you to change the size and colors of the
-Bootstap icons using the Free or Pro versions of GLYPHICONS. When using the Pro
-files, all the extra icons will be available to your Bootstrap project.
+Free or Pro versions of GLYPHICONS.
 
-New CSS and PNG sprites are generated that can override Bootstrap's
-default icon before or mixed into a Bootstrap LESS project.
+The generator was developed for a Bootstrap audience, but I really dislike Bootstrap's
+css class names.  Therefore, I tweaked this with saner classes which lead to a smaller
+stylesheet and will lead to a smaller html file.
+
+Since you are not using Bootstrap, you will have to link back to [GLYPHICONS](http://glyphicons.com/)
+if you use the free icon set.  No need for backlinks if you paid.
+
+New CSS and PNG sprites are generated from the icon set.
 
 Dependencies
 ------------
@@ -26,16 +31,18 @@ How to use sprite-generator.py
     - glyphicons.css         CSS Overrides
     - glyphicons.html        Preview HTML
     - glyphicons.png         Black Icons
-    - glyphicons-white.png   White (or colorized) icons
+    - glyphicons-alt.png   White (or colorized) icons
 
  5. Open sprites/glyphicons.html in your browser (if you're on a Mac, it will try and do so itself)
 
-How to use in your Bootstrap project
+How to use in your project
 ------------------------------------
-1. Copy the glyphicons.png and glyphicons-white.png to the project img directory.
-2. Include the glyphicons.css file *after* the bootstrap CSS files or include in
-   your bootstrap.less files after the sprites.less entry.
+1. Copy the glyphicons.png and glyphicons-alt.png to the project img directory.
+2. Include the glyphicons.css file
 3. Edit glyphicons.css, fixing the paths to the image files in the background-image directives.
+4. Example icon <i class="icon address-book"></i>
+5. Example alternate icon <i class="icon alt address-book"></i>
+6. Example alternate-on-hover behavior <a class="hinvert"><i class="icon address-book"></i></a>
 
 How to change the icon sizes or colors
 --------------------------------------
