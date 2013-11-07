@@ -31,7 +31,7 @@ How to use sprite-generator.py
     - glyphicons.css         CSS Overrides
     - glyphicons.html        Preview HTML
     - glyphicons.png         Black Icons
-    - glyphicons-alt.png   White (or colorized) icons
+    - glyphicons-alt.png     White (or colorized) icons
 
  5. Open sprites/glyphicons.html in your browser (if you're on a Mac, it will try and do so itself)
 
@@ -40,9 +40,9 @@ How to use in your project
 1. Copy the glyphicons.png and glyphicons-alt.png to the project img directory.
 2. Include the glyphicons.css file
 3. Edit glyphicons.css, fixing the paths to the image files in the background-image directives.
-4. Example icon <i class="icon address-book"></i>
-5. Example alternate icon <i class="icon alt address-book"></i>
-6. Example alternate-on-hover behavior <a class="hinvert"><i class="icon address-book"></i></a>
+4. Example icon &lt;i class="icon address-book">&lt;/i>
+5. Example alternate icon &lt;i class="icon alt address-book">&lt;/i>
+6. Example alternate-on-hover behavior &lt;a class="hinvert">&lt;i class="icon address-book">&lt;/i>&lt;/a>
 
 How to change the icon sizes or colors
 --------------------------------------
