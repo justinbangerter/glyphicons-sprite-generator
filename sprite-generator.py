@@ -74,7 +74,7 @@ SPRITE_FILE = 'sprites/glyphicons.png'
 SPRITE_WHITE_FILE = 'sprites/glyphicons-alt.png'
 SPRITE_HTML = 'sprites/glyphicons.html'
 
-CSS_TEMPLATE = """.icon {
+CSS_TEMPLATE = """[class*="icon-"] {
   display: inline-block;
   width: %spx;
   height: %spx;
@@ -86,11 +86,11 @@ CSS_TEMPLATE = """.icon {
   background-repeat: no-repeat;
 }
 
-.icon, .hinvert:hover .icon.alt, .icon.alt.hinvert:hover {
+[class*="icon-"], .hinvert:hover .alt[class*="icon-"], [class*="icon-"].alt.hinvert:hover {
   background-image: url("glyphicons.png");
 }
 
-.icon.alt, .hinvert:hover .icon, .icon.hinvert:hover {
+[class*="icon-"].alt, .hinvert:hover [class*="icon-"], [class*="icon-"].hinvert:hover {
   background-image: url("glyphicons-alt.png");
 }
 
@@ -101,7 +101,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <head>
     <meta charset="utf-8">
     <title>GLYPHICONS Sprite Generator</title>
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
     <link href="glyphicons.css" rel="stylesheet">
   </head>
   <body>
@@ -143,7 +142,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   </body>
 </html>"""
 
-TR_TEMPLATE = '        <tr><td>%s</td><td class="center"><i class="icon %s"></i></td><td class="center bg-gray"><i class="icon alt %s"></i></td><td class="hinvert center"><i class="icon %s"></i></td><td class="hinvert center bg-gray"><i class="icon alt %s"></i></td></tr>'
+TR_TEMPLATE = '        <tr><td>%s</td><td class="center"><i class="%s"></i></td><td class="center bg-gray"><i class="alt %s"></i></td><td class="hinvert center"><i class="%s"></i></td><td class="hinvert center bg-gray"><i class="alt %s"></i></td></tr>'
 
 
 def new_icon(filename, white=False):
@@ -218,7 +217,7 @@ def main():
         match = ICON_NAME.findall(filename)
 
         # Create the class name
-        name = match[0].replace('_', '-').replace('@2x', '')
+        name = "icon-%s" % match[0].replace('_', '-').replace('@2x', '')
 
         # Position in the sprite
         x = (column * CELL_SIZE[0]) + 5
@@ -229,7 +228,7 @@ def main():
         sprite_white.paste(new_icon(filename, True), (x, y))
 
         # Create the CSS line
-        icons[name] = ".icon.%s { background-position: -%ipx -%ipx; }" % (name, (column * CELL_SIZE[0]) + 5, (row * CELL_SIZE[1]) + 5)
+        icons[name] = ".%s { background-position: -%ipx -%ipx; }" % (name, (column * CELL_SIZE[0]) + 5, (row * CELL_SIZE[1]) + 5)
 
         # Keep track of where we are in the sprite
         column += 1
